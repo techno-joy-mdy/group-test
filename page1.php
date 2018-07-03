@@ -3,11 +3,7 @@
   <head>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-<script
-  src="https://code.jquery.com/jquery-3.3.1.js"
-  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-  crossorigin="anonymous"></script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <!-- Optional theme -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
@@ -31,7 +27,7 @@
                 <li class=""> <a href="#">page</a> </li>
               </ul>
             </li>
-            <li class="active"><a href="#" onclick="getInsert()">Insert</a>
+            <li class="active"><button style="margin-top:8px;" type="button" class="btn btn-primary insertBtn" data-toggle="modal" data-target="#myModal" data-whatever="@mdo">Insert data<span style="padding-left: 5px;" class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
                    </li>
           </ul>        
           <!-- endofnavitems -->
@@ -47,6 +43,49 @@
         <!-- endofsearch -->
       </nav>
       <!-- endofnav -->
+       <!-- start modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New Insert Form</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+            <form action="sqlCompany.php" method="POST" enctype="multipart/form-data">
+              <!-- name input -->
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" name="name" id="name" required="" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="text" name="phone" id="phone" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="address">Address</label>
+                <textarea name="address" id="address" required="" class="form-control"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="type">Type</label>
+                <input type="text" name="type" id="type" class="form-control">
+              </div>
+              <div class="form-group">
+                  <button class="btn btn-success" name="save">
+                    Save
+                  </button>
+                  <button class="btn btn-danger" type="reset">Reset</button>
+                </div>
+            </form>
+          </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+    <!-- end of modal -->
 <div class="panel panel-headline">
             <div class="panel-body">
       <div class="container table-responsive">
@@ -55,10 +94,10 @@
             <tr class="success">
               <th>#</th>
               <th>Company Name</th>
-              <th>Type</th>
               <th>Phone</th>
               <th>Address</th>
-              <th></th>
+              <th>Type</th>
+              <th>Action</th>
             </tr>
           </thead>
                   <tbody>
@@ -90,7 +129,7 @@
                           <td>
                           <button class='btn btn-info' onclick='getEdit($id)'>Update</button>
                           
-                          <a href='mysqltask.php?deleteid=$id' class='btn btn-danger'>Delete</a>
+                          <a href='sqlCompany.php?deleteid=$id' class='btn btn-danger'>Delete</a>
                           </td>
                           </tr>";
 
@@ -103,6 +142,65 @@
     </div>
   </div>
       <!-- endoftable -->
+
+<script type="text/javascript">
+  function getEdit(id){
+    $.ajax({
+      url:'SqlCompanyEdit.php',
+      type:'POST',
+      data:{'editid':id},
+      dataType:'json',
+      success:function(data){
+        console.log(data);
+        $('#id').val(data.id);
+        $('#name1').val(data.name);
+        $('#phone1').val(data.phone);
+        $('#address1').val(data.address);
+        $('#type1').val(data.type);
+        $('#myModalUpdate').modal('show');
+      }
+    })
+  }
+</script>
+  <div class="modal fade" id="myModalUpdate">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <a href="#" class="close" data-dismiss="modal">&times;</a>
+        <h5 class="modal-title">Edit Company Form</h5>
+      </div>
+      <div class="modal-body">
+            <form action="sqlCompany.php" method="POST">
+              <!-- name input -->
+              <input type="hidden" name="id" id="id">
+              <div class="form-group">
+                <label for="name1">Name</label>
+                <input type="text" name="name" id="name1" required="" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="phone1">Phone</label>
+                <input type="text" name="phone" id="phone1" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="address1">Address</label>
+                <textarea name="address" id="address1" required="" class="form-control"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="type1">Type</label>
+                <input type="text" name="type" id="type1" class="form-control">
+              </div>
+              <div class="form-group">
+                  <button class="btn btn-success" name="update">
+                    Update
+                  </button>
+                </div>
+            </form>
+          </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
 
       <div class="container" style="text-align:center">
         <ul class="pagination pagination-sm">
@@ -119,50 +217,12 @@
 
     </div>
     <!-- endofcontainer -->
-
    
-    <!-- start modal -->
-    <div class="modal fade" id="myModal">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <a href="#" class="close" data-dismiss='modal'>&times;</a>
-            <h3 class="modal-title">Insert Company</h3>
-          </div>
-          <div class="modal-body">
-            <form action="sqlCompany.php" method="POST" enctype="multipart/form-data">
-              <!-- name input -->
-              <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" name="name" id="name" required="" class="form-control">
-              </div>
-              <div class="form-group">
-                <label for="phone">Phone</label>
-                <input type="text" name="phone" id="phone" class="form-control">
-              </div>
-              <div class="form-group">
-                <label for="address">Address</label>
-                <input type="text" name="address" id="address" class="form-control">
-              </div>
-              <div class="form-group">
-                <label for="type">Type</label>
-                <input type="text" name="type" id="type" class="form-control">
-              </div>
-              <div class="form-group">
-                  <button class="btn btn-success" name="save">
-                    Save
-                  </button>
-                </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- end of modal -->
-     <script type="text/javascript">
+   
+ <!--     <script type="text/javascript">
          function getInsert(){
           $('#myModal').modal('show');
       }
-    </script>
+    </script> -->
   </body>
 </html>

@@ -21,5 +21,19 @@ function valid($data){
 					echo "<br>".$company->insertCompany($name,$phone,$address,$type);
 				}
 			}
+	else if(isset($_POST['update'])){
+		$id=$_POST['id'];
+		$name=$_POST['name'];
+		$phone=$_POST['phone'];
+		$address=$_POST['address'];
+		$type=$_POST['type'];
+		if ($name !="" && $phone !="" && $address !="" && $type != "") {
+					$company->updateCompany($id,$name,$phone,$address,$type);
+				}
+	}
+	else if(isset($_GET['deleteid'])){
+		$id=$_GET['deleteid'];
+		$company->deleteCompany($id);
+	}
 			header("location:page1.php");
  ?>
