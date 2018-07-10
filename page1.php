@@ -144,7 +144,7 @@
     $conn = mysqli_connect('localhost','root','');
     mysqli_select_db($conn,'company');
 
-    $result_per_page = 2;
+    $result_per_page = 10;
 
   $query = "SELECT * FROM companies";
   $result = mysqli_query($conn,$query);
@@ -222,7 +222,7 @@
                           <a href='sqlCompany.php?deleteid=$id' class='btn btn-danger'>Delete</a>
                           </td>
                           </tr>";
-                          $i+=$i;
+                          $i++;
 
                           }
 
