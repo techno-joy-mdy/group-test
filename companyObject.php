@@ -1,11 +1,11 @@
-<?php 
-require 'index.php';
+<?php
+require 'conn.php';
 /**
  *
  */
 class company extends Index
 {
-	
+
 	function __construct()
 	{
 		parent::__construct();
@@ -31,6 +31,6 @@ class company extends Index
 		$this->con->query($sql);
 		return true;
 	}
+
 }
-// header("location:page1.php");
 ?>
